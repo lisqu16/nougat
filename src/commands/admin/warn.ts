@@ -1,15 +1,15 @@
 import { Nougat } from "../../main/main";
-import { RichEmbed, Message } from "discord.js";
+import { MessageEmbed, Message } from "discord.js";
 import { errorEmbed, usageEmbed } from "../../modules/errorEmbed";
 
 export default function warn(args, message: Message) {
   let powod = args.slice(1).join(" ");
   let ofiara = message.mentions.members.first();
   if (typeof ofiara == "undefined") {
-    message.channel.send({embed: usageEmbed("warn @kogo powod")});
+    message.channel.send(usageEmbed("warn @kogo powod"));
   } else {
     if (
-      message.guild.members.get(message.author.id).hasPermission("KICK_MEMBERS")
+      message.guild.members.cache.get(message.author.id).hasPermission("KICK_MEMBERS")
     ) {
       // dodaj warny użytkownikowi
       Nougat.Uzytnik.findOne(
@@ -21,35 +21,31 @@ export default function warn(args, message: Message) {
               guild.warny++;
               user.save();
               // zakomunikuj
-              const warnSEmbed = new RichEmbed()
+              const warnSEmbed = new MessageEmbed()
                   .setAuthor(
-                      "Nougat",
-                      "https://cdn.discordapp.com/avatars/429587398511427584/a8d77ae510e68cc595c1ccda04a755fa.jpg?size=1024"
+                      message.guild.name,
+                      message.guild.iconURL()
                   )
                   .setTitle("Ostrzeżono użytkownika pomyślnie!")
                   .setDescription("To był "+guild.warny+" warn")
                   .setColor(0x198c41);
-              message.channel.send({
-                  embed: warnSEmbed
-              });
+              message.channel.send(warnSEmbed);
 
-              const warnAEmbed = new RichEmbed()
+              const warnAEmbed = new MessageEmbed()
                   .setAuthor(
-                      "Nougat",
-                      "https://cdn.discordapp.com/avatars/429587398511427584/a8d77ae510e68cc595c1ccda04a755fa.jpg?size=1024"
+                      message.guild.name,
+                      message.guild.iconURL()
                   )
-                  .setTitle("Zostałeś ostrzeżony na serwerze " + message.guild.name)
+                  .setTitle("Zostałeś ostrzeżony")
                   .addField("Powód", powod)
                   .addField("Ilość warnów", guild.warny)
                   .setColor(0x198c41);
-              message.mentions.members.first().send({
-                  embed: warnAEmbed
-              });
+              ofiara.send(warnAEmbed);
           }
           }
       );
     } else {
-      message.channel.send({embed: errorEmbed("Nie masz uprawnień")});
+      message.channel.send(errorEmbed("Nie masz uprawnień"));
     }
   }
 }

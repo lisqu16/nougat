@@ -1,15 +1,15 @@
-import { Message, RichEmbed } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import { errorEmbed } from "../../modules/errorEmbed";
 import { Nougat } from "../../main/main";
 
 export default function cytaty(args, message: Message) {
     if(message.guild.members
-        .get(message.author.id)
+        .cache.get(message.author.id)
         .hasPermission("MANAGE_CHANNELS")) {
             // sprawdź czy oznaczył kanał
             Nougat.Serwer.findOne({id: message.guild.id},
                 function(err, guild) {
-                    const mbed = new RichEmbed()
+                    const mbed = new MessageEmbed()
                     .setAuthor("Nougat", 'https://cdn.discordapp.com/avatars/429587398511427584/a8d77ae510e68cc595c1ccda04a755fa.jpg?size=1024')
                     .setTitle("Kanał z cytatami")
                     .setColor(0x73cc2d)
@@ -28,14 +28,14 @@ export default function cytaty(args, message: Message) {
                             mbed.setDescription("Aby ustawić oznacz kanał np. *cytaty #cytaty")
                             message.channel.send({embed: mbed})                        
                         } else {
-                            if(message.guild.channels.get(guild.cytaty) === null || message.guild.channels.get(guild.cytaty) === undefined) {
+                            if(message.guild.channels.cache.get(guild.cytaty) === null || message.guild.channels.cache.get(guild.cytaty) === undefined) {
                                 guild.cytaty = null;
                                 guild.save();
 
                                 mbed.setDescription("Aby ustawić oznacz kanał np. *cytaty #cytaty")
                                 message.channel.send({embed: mbed})  
                             } else {
-                                mbed.setDescription("Aktualnym kanałem z cytatami jest "+message.guild.channels.get(guild.cytaty).toString())
+                                mbed.setDescription("Aktualnym kanałem z cytatami jest "+message.guild.channels.cache.get(guild.cytaty).toString())
                                 mbed.setFooter("Aby wyłączyć, użyj *cytaty off")
                                 message.channel.send({embed: mbed})
                             }
