@@ -118,7 +118,7 @@ export class Nougat {
                 return;
             }
             this.dodajPunkty(message);
-            if(message.content.startsWith("*")) {
+            if(message.content.startsWith(this.config.prefix)) {
                 if (message.guild) {
                     serwerm(message.guild, 1);
                 }

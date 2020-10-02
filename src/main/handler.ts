@@ -4,7 +4,7 @@ import * as n from './loader';
 let config = require('../../../settings.json')
 
 export function handluj(message: Message, pozwij, sell, client) {
-    const args = message.content.slice("*".length).trim().split(/ +/g);
+    const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase(); // wycinanie komendy i argumentow
 
     switch(command) {
