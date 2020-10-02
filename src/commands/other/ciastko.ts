@@ -1,4 +1,4 @@
 export default function ciastko(message, client) {
-    let cookie = "\🍪";
-    message.channel.send(`${client.users.find('username', message.author.username).toString()}, masz tu: ${cookie}`)
+    let uzytnik = client.users.cache.find(user => user.username === message.author.username).toString();
+    message.channel.send(`${uzytnik}, masz tu: \🍪`)
 }

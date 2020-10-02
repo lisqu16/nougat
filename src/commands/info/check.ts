@@ -1,14 +1,14 @@
-import { RichEmbed, Client, Message } from 'discord.js';
+import { MessageEmbed, Client, Message } from 'discord.js';
 
 export default function check(message: Message, client: Client, mode)  {
-    if (mode == 0) var klient = message.guild.members.get(client.user.id);
-    if (mode == 1) var klient = message.guild.members.get(message.author.id);
-    let embeded = new RichEmbed()
+    if (mode == 0) var klient = message.guild.members.cache.get(client.user.id);
+    if (mode == 1) var klient = message.guild.members.cache.get(message.author.id);
+    let embeded = new MessageEmbed()
     .setAuthor('Nougat', 'https://cdn.discordapp.com/avatars/429587398511427584/a8d77ae510e68cc595c1ccda04a755fa.jpg?size=1024')
     .setColor(0x123456);
 
-    if (mode == 0) embeded.setTitle("Sprawdzanie uprawnień bota");
-    if (mode == 1) embeded.setTitle("Sprawdzanie twoich uprawnień...");
+    if (mode == 0) embeded.setTitle("Uprawnienia bota");
+    if (mode == 1) embeded.setTitle("Twoje uprawnienia");
 
     let ok = "\✅";
     let nieok = "\❌";
@@ -36,5 +36,5 @@ export default function check(message: Message, client: Client, mode)  {
         embeded.addField("Wyrzucanie", nieok, true);
     }
 
-    message.channel.send({embed: embeded});
+    message.channel.send(embeded);
 }

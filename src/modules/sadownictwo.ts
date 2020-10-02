@@ -1,6 +1,7 @@
 var pozwany = []
 var powod = [];
-import { RichEmbed } from 'discord.js';
+var wesolowska = "http://ro.com.pl/wp-content/uploads/2014/11/wesolowska.jpg";
+import { MessageEmbed } from 'discord.js';
 
 export default function sad(message,  pozwijmode, pozwijmodev) {
     if(pozwijmode[message.author.id] == true) {
@@ -8,7 +9,7 @@ export default function sad(message,  pozwijmode, pozwijmodev) {
         if(pozwijmodev[message.author.id] == 1) {
             if(message.mentions.members.first()) {
                 pozwany[message.author.id] = message.mentions.members.first();
-                message.channel.send(`A więc pozywasz ${pozwany[message.author.id]}. \nO co go pozywasz?`)
+                message.channel.send(`Więc, pozywasz ${pozwany[message.author.id]}, o co go pozywasz?`)
                     .then(() => {
                         pozwijmodev[message.author.id] = 2;
                     })
@@ -17,7 +18,7 @@ export default function sad(message,  pozwijmode, pozwijmodev) {
                 pozwijmodev[message.author.id] = null;
                 pozwijmode[message.author.id] = null;
             } else {
-                message.channel.send('No kogo pozywasz Janusz, oznacz go nie wstydź się! Lub napisz anuluj, aby anulować pozywanie.');
+                message.channel.send('No kogo pozywasz Janusz, oznacz go, nie wstydź się, albo napisz anuluj, aby anulować pozew!');
             }
         }
         // pozwij mode etap 2: wyswietla dane i pyta o ich prawidlowosc
@@ -25,18 +26,18 @@ export default function sad(message,  pozwijmode, pozwijmodev) {
             if(typeof pozwany[message.author.id] == 'undefined') return;
             powod[message.author.id] = message.content;
             if(powod[message.author.id] == "anuluj") {
-                message.channel.send("Anulowano.")
+                message.channel.send("Anulowano pozew.")
                 pozwijmodev[message.author.id] = null;
                 pozwijmode[message.author.id] = null;
                 return;
             }
-            const embed = new RichEmbed()
+            const embed = new MessageEmbed()
                 .setColor((Math.random() * 0xFFFFFF << 0).toString(16))
-                .setAuthor("Sadownictwo", "http://ro.com.pl/wp-content/uploads/2014/11/wesolowska.jpg")
+                .setAuthor("Sadownictwo", wesolowska)
                 .setTitle(`${message.author.tag} pozywa ${pozwany[message.author.id].displayName}`)
-                .setDescription(`Powód: ${powod[message.author.id]}`)
+                .setDescription(`bo ${powod[message.author.id]}\n`)
                 .setThumbnail('http://sadarbitrazowy.com.pl/img/mlotek.png')
-                .addField('Wszystko się zgadza?', 'tak/nie');
+                .addField('Wszystko się zgadza?', 'Tak/Nie');
             message.channel.send({
                     embed
                 })
@@ -47,31 +48,24 @@ export default function sad(message,  pozwijmode, pozwijmodev) {
         // pozwij mode etap 3: wychwytuje odpowiedz i w zaleznosci od niej pozywa i resetuje pozwijmode
         else if(pozwijmodev[message.author.id] == 3) {
             if(message.content.toLowerCase() == 'nie') {
-                const embed = new RichEmbed()
-                    .setAuthor("Sadownictwo", "http://ro.com.pl/wp-content/uploads/2014/11/wesolowska.jpg")
-                    .setTitle('W takim razie nikogo nie pozywasz!')
+                const embed = new MessageEmbed()
+                    .setAuthor("Sadownictwo", wesolowska)
+                    .setTitle('W takim razie nikogo nie pozywasz! \🎉')
                     .setColor((Math.random() * 0xFFFFFF << 0).toString(16))
-                message.channel.send({
-                    embed: embed
-                });
+                message.channel.send(embed);
                 pozwijmodev[message.author.id] = null;
                 pozwijmode[message.author.id] = null;
             } else if(message.content.toLowerCase() == 'tak') {
-                const embed = new RichEmbed()
-                    .setAuthor("Sadownictwo", "http://ro.com.pl/wp-content/uploads/2014/11/wesolowska.jpg")
+                const embed = new MessageEmbed()
+                    .setAuthor("Sadownictwo", wesolowska)
                     .setColor((Math.random() * 0xFFFFFF << 0).toString(16))
-                    .setTitle("Pomyślnie pozwałeś " + pozwany[message.author.id].displayName);
-                message.channel.send({
-                    embed: embed
-                })
-                const ofiara = new RichEmbed()
-                    .setAuthor("Sadownictwo", "http://ro.com.pl/wp-content/uploads/2014/11/wesolowska.jpg")
+                    .setTitle("Pomyślnie pozwałeś " + pozwany[message.author.id].displayName + " \✅");
+                message.channel.send(embed);
+                const ofiara = new MessageEmbed()
+                    .setAuthor(message.guild.name, message.guild.iconURL())
                     .setTitle("Zostałeś pozwany przez " + message.author.tag)
-                    .setColor((Math.random() * 0xFFFFFF << 0).toString(16))
-                    .addField('Serwer', message.guild.name);
-                pozwany[message.author.id].send({
-                    embed: ofiara
-                });
+                    .setColor((Math.random() * 0xFFFFFF << 0).toString(16));
+                pozwany[message.author.id].send(ofiara);
                 pozwijmodev[message.author.id] = null;
                 pozwijmode[message.author.id] = null;
             } else {

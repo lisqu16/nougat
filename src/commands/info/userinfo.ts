@@ -1,4 +1,4 @@
-import { RichEmbed, User, GuildMember, Message } from 'discord.js';
+import { MessageEmbed, User, GuildMember, Message } from 'discord.js';
 
 export default function userinfo(args, message: Message) {
     if(!message.guild) return;
@@ -33,19 +33,17 @@ export default function userinfo(args, message: Message) {
             status = 'Nie przeszkadzać';
             break;
     }
-    const boxdel = new RichEmbed()
+    const boxdel = new MessageEmbed()
         .setAuthor('Nougat', 'https://cdn.discordapp.com/avatars/429587398511427584/a8d77ae510e68cc595c1ccda04a755fa.jpg?size=1024')
         .setColor(0x128070)
-        .setThumbnail(uzytkownik.avatarURL)
+        .setThumbnail(uzytkownik.displayAvatarURL())
         .setTitle(uzytkownik.username)
         .addField('Zarejestrowano', `${czas.getDate()}.${czasMo.substr(-2)}.${czas.getFullYear()} ${czas.getHours()}:${czasMi.substr(-2)}`, true)
         .addField('Tag', uzytkownik.discriminator, true)
         .addField('Status', status, true)
         .addField('Data dołączenia na serwer', `${czasDol.getDate()}.${czasDolMo.substr(-2)}.${czasDol.getFullYear()} ${czasDol.getHours()}:${czasDolMi.substr(-2)}`,true)
         .addField('ID', uzytkownik.id, true)
-        .addField('Role', uzytkownikMem.roles.array(), true)
-        .addField('Link do avataru:', uzytkownik.avatarURL, false)
-    message.channel.send({
-        embed: boxdel
-    });
+        .addField('Role', uzytkownikMem.roles.cache.array(), false)
+        .setDescription('Pobierz avatar: [png]('+uzytkownik.avatarURL({ "size": 512, "format": "png"})+') | [jpg]('+uzytkownik.avatarURL({ "size": 512, "format": "jpg"})+') | [gif]('+uzytkownik.avatarURL({ "size": 512, "format": "gif"})+')');
+    message.channel.send(boxdel);
 }

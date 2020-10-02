@@ -1,7 +1,7 @@
-import { RichEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 
 export function errorEmbed(message: String) {
-    let embed = new RichEmbed()
+    let embed = new MessageEmbed()
     .setAuthor(
         "Nougat",
         "https://cdn.discordapp.com/avatars/429587398511427584/a8d77ae510e68cc595c1ccda04a755fa.jpg?size=1024"
@@ -14,7 +14,7 @@ export function errorEmbed(message: String) {
 }
 
 export function usageEmbed(message: String) {
-    let embed = new RichEmbed()
+    let embed = new MessageEmbed()
     .setAuthor(
         "Nougat",
         "https://cdn.discordapp.com/avatars/429587398511427584/a8d77ae510e68cc595c1ccda04a755fa.jpg?size=1024"
